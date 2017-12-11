@@ -102,7 +102,7 @@ public class PasswordsLibrary{
 
           case "2":
           UserTable.getInstancia().listar();
-          System.out.println("Ingrese username por ID: ");
+          System.out.println("\nIngrese username por ID: ");
           String buscarID = escaner.nextLine();
           UserTable.getInstancia().search(buscarID);
           //luego de 3 segundos limpiamos la pantalla y regresamos al menu principal
@@ -113,10 +113,21 @@ public class PasswordsLibrary{
 
           case "3":
           UserTable.getInstancia().listar();
+          System.out.println("\nPor favor espere\nRegresando a menu principal...");
+          PasswordsLibrary.getInstancia().esperar(7000);//luego de 5 segundos limpiamos la pantalla y regresamos al menu principal
+          PasswordsLibrary.getInstancia().limpiarPantalla();
+          PasswordsLibrary.getInstancia().menu();
 
           break;
 
           case "4":
+          UserTable.getInstancia().listar();
+          System.out.println("\n\nIngrese el ID del usuario a eliminar: ");
+          String idEliminar = escaner.nextLine();
+          UserTable.getInstancia().delete(idEliminar);
+          PasswordsLibrary.getInstancia().esperar(5000);//luego de 2 segundos limpiamos la pantalla y regresamos al menu principal
+          PasswordsLibrary.getInstancia().limpiarPantalla();
+          PasswordsLibrary.getInstancia().menu();
           break;
 
           case "5":

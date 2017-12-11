@@ -60,14 +60,17 @@ public class UserTable{
 
   public void delete(String username){
     try {
-
-      if (username.length()>=0 ) {
-        contenido.remove(username);
+      if (username.length()>=1 ) {
+        this.contenido.remove(Integer.parseInt(username));
+        System.out.println("\nEl dato se elimino correctamente\nPor favor espere, regresando a menu principal...");
       }else{
         System.out.println("El username no puede estar vacio");
       }
     }catch(Exception UserDoesNotExistsException){
-      System.out.println("Se produjo el siguiente error: UserDoesNotExistsException. El usuario no existe");
+      System.out.println("Se produjo el siguiente error: UserDoesNotExistsException. El usuario no existe\nPor favor espere...");
+      PasswordsLibrary.getInstancia().esperar(5000);//luego de 2 segundos limpiamos la pantalla y regresamos al menu principal
+      PasswordsLibrary.getInstancia().limpiarPantalla();
+      PasswordsLibrary.getInstancia().menu();
     }
   }
 
