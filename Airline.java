@@ -98,7 +98,7 @@ public class Airline{
                     arregloAsientos[fila][columna]=reservarAsiento+"X";
 
                     //almacenamos los datos del pasajero que hizo la reservacion
-                    usuariosReservaciones[fila][columna]=reservarAsiento+ " "+nombrePasajero + " "+edadPasajero ;
+                    usuariosReservaciones[fila][columna]="No: "+reservarAsiento+ " "+nombrePasajero + " "+edadPasajero ;
 
                     System.out.println("Se reservo correctamente el asiento\nPor favor espere...");
                     SistemaOperativo.getInstancia().mensaje(1000);
@@ -166,8 +166,43 @@ public class Airline{
                 break;
 
                 case "2":
-                System.out.println("NO DISPONIBLE OPCION 2");
-                break;
+                Airline.getInstancia().mostrarAsientos(arregloAsientos);
+                while(true){
+                  System.out.println("Ingrese No. de asiento que tiene asignado (actualmente ocupado: X): ");
+                  String asientoAsignado = escaner.nextLine();
+                  if(!asientoAsignado.equals("")&& (Pattern.matches("[1-9]{1,}+", asientoAsignado))){
+                    int convertirAsientoAsignado = Integer.parseInt(asientoAsignado);
+                    if (convertirAsientoAsignado>0 && convertirAsientoAsignado<=asiento) {
+                      System.out.println("Listado de asientos: ");
+                      mostrarAsientos(arregloAsientos);
+                      System.out.println(" ");
+                      for(int f=0;f<(asiento/6);f++){
+                        for(int c=0;c<6;c++){
+                          //verificamos que el asiento se encuentre en nuestro arreglo y lo reservamos si esta disponible.
+                          if(arregloAsientos[f][c].equals(asientoAsignado+"X")){
+                            System.out.println("El asiento "+arregloAsientos[f][c] + " se cancelo (disponible).");
+                            arregloAsientos[f][c]=asientoAsignado+"*";
+                            System.out.println("Datos del viajero: ");
+                            System.out.println(usuariosReservaciones[f][c]);
+                            usuariosReservaciones[f][c]=" ";
+                            break;
+                          }else if(arregloAsientos[f][c].equals(asientoAsignado+"*")){
+                            System.out.println("El asiento NO se cancelo: ");
+                            System.out.println("Puede deberse a que actualmente esta disponible");
+
+                          }
+                        }
+                      }
+                      break;
+                    }else{
+                      System.out.println("El No. de asiento es incorrecto.");
+                    }
+
+                  }else{
+                    System.out.println("El numero de asiento unicamente debe de llevar numeros");
+                  }
+                }
+
 
                 case "3":
                 System.out.println("Datos de usuarios con reservaciones");
