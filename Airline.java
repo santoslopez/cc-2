@@ -18,6 +18,7 @@ public class Airline{
   private static String nombrePasajero;//guardamos el nombre del pasajero
   private static String edadPasajero;//guardamos la edad del pasajero
   private static Scanner escaner = new Scanner(System.in);
+  private static String usuariosReservaciones[][];
 
   //patron de diseno singleton para crear una sola instancia de la clase
   private static Airline airline;
@@ -63,6 +64,8 @@ public class Airline{
     for (int fila=0; fila<(asiento/6);fila++ ) {
       for (int columna=0;columna<6;columna++) {
         arregloAsientos[fila][columna]=String.valueOf(numeroAsiento++)+"*";
+        //inicializamos todas las habitaciones sin reservaciones de usuarios
+        usuariosReservaciones[fila][columna]=String.valueOf(" ");
         asientosDisponibles++;
       }
     }
@@ -76,9 +79,9 @@ public class Airline{
 
       if(asientosDisponibles>=1){
         System.out.println("Ingrese su nombre: ");
-        String nombre = escaner.nextLine();
+        String nombrePasajero = escaner.nextLine();
         System.out.println("Ingrese su edad: ");
-        String edad = escaner.nextLine();
+        String edadPasajero = escaner.nextLine();
         Airline.getInstancia().mostrarAsientos(arregloAsientos);
         //ciclo que nos permite volver a pedir el numero de asiento a reservar en caso el ingresado es incorrecto
         while(true){
@@ -93,12 +96,20 @@ public class Airline{
                 for (int columna=0;columna<6;columna++) {
                   if (arregloAsientos[fila][columna].equals(reservarAsiento+"*")) {
                     arregloAsientos[fila][columna]=reservarAsiento+"X";
+
+                    //almacenamos los datos del pasajero que hizo la reservacion
+                    usuariosReservaciones[fila][columna]=reservarAsiento+ " "+nombrePasajero + " "+edadPasajero ;
+
                     System.out.println("Se reservo correctamente el asiento\nPor favor espere...");
                     SistemaOperativo.getInstancia().mensaje(1000);
                     SistemaOperativo.getInstancia().limpiarPantalla();//limpiamos la pantalla
                     Airline.getInstancia().menu();//dibujamos la interfaz
                     asientosNoDisponibles++;//sumamos un asiento no disponible
                     asientosDisponibles--;//restamos un asiento disponible
+
+                  //si seleccionamos una habitacion ocupada
+                  }else if(arregloAsientos[fila][columna].equals(reservarAsiento+"X") ) {
+                    System.out.println("ERROR!!! No puede reservar una habitacion ocupado");
                   }
                 }
               }
@@ -137,6 +148,9 @@ public class Airline{
           SistemaOperativo.getInstancia().limpiarPantalla();//limpiamos la pantalla
           String arregloAsientos[][]=new String[(asiento/6)][6];
 
+          //arreglo donde vamos a guardar los usuarios que tienen reservaciones
+          usuariosReservaciones=new String[(asiento/6)][6];
+
           Airline.getInstancia().inicializarAsientos(arregloAsientos,asiento);
 
           //dibujamos la interfaz
@@ -156,15 +170,21 @@ public class Airline{
                 break;
 
                 case "3":
-                System.out.println("NO DISPONIBLE OPCION 3");
+                System.out.println("Datos de usuarios con reservaciones");
+                Airline.getInstancia().mostrarAsientos(usuariosReservaciones);
                 break;
 
                 case "4":
-                System.out.println("NO DISPONIBLE OPCION 4");
+                System.out.println("\n");
+                System.out.println("Los asientos disponibles tienen el *");
+                System.out.println("Los asientos NO disponibles tienen la X");
+                Airline.getInstancia().mostrarAsientos(arregloAsientos);
                 break;
 
                 case "5":
-                //estadoAsientos(arregloAsientos,asiento);
+                //imprimimos el estado del vuelo o sea asientos disponibles y no disponibles
+                System.out.println("Cantidad de asientos ocupados: "+Airline.getInstancia().getAsientosNoDisponibles());
+                System.out.println("Cantidad de asientos disponibles: "+Airline.getInstancia().getAsientosDisponibles());
                 System.exit(0);//cerramos el programa
                 break;
 
