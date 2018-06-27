@@ -36,6 +36,8 @@ public class ProcesadorDeTransaccionesNuevas implements Runnable{
 
   public void ejecutar(int tiempoDesencolarTransaccionE100){
     try {
+
+
       while (true) {
         //verificamos que por lo menos hay colas en el estado 100
         if (g.getEstado100().size()<=0) {

@@ -55,11 +55,20 @@ public class BillPayments{
           //Tiempo en el que el Procesador de Transacciones nuevas desencola una transación del estado 100.
           int tiempoDesencolarTransaccionE100 = Integer.parseInt(args[1]);
 
+          //Tiempo en el que el Verificador de Transacciones desencola una transacción del estado 200.
+          int tiempoDesencolarEstado200 = Integer.parseInt(args[2]);
+
+          //iempo en el que el Payer desencola una transacción del estado 300.
+          int tiempoDesencolarEstado300 = Integer.parseInt(args[3]);
+
+
+
           Thread t1 = new Thread(new GeneradorDeTransacciones(tiempoGeneradorTransacciones));
           Thread t2 = new Thread(new ProcesadorDeTransaccionesNuevas(tiempoDesencolarTransaccionE100));
-          Thread t3 = new Thread(new VerificadorDeTransacciones());
+          Thread t3 = new Thread(new VerificadorDeTransacciones(tiempoDesencolarEstado200));
+          Thread t4 = new Thread(new Payer(tiempoDesencolarEstado300));
 
-          generador = new Thread[]{t1,t2,t3};
+          generador = new Thread[]{t1,t2,t3,t4};
 
           for (int i=0;i<generador.length;i++ ) {
             generador[i].start();

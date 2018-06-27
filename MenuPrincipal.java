@@ -34,8 +34,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
   public JList estado200Lista;
   public JList estado201Lista;
   public JList estado300Lista;
-  public JList estado301;
-  public JList estado400;
+  public JList estado301Lista;
+  public JList estado400Lista;
 
   public JTextArea informacion;
 
@@ -44,6 +44,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
   private JScrollPane scrollPaneEstado201;
   private JScrollPane scrollPaneEstado300;
   private JScrollPane scrollPaneEstado301;
+  private JScrollPane scrollPaneEstado400;
 
   private JScrollPane scrollPaneInformacion;
 
@@ -51,6 +52,9 @@ public class MenuPrincipal extends JFrame implements ActionListener{
   public DefaultListModel modeloListaEstado200;
   public DefaultListModel modeloListaEstado201;
   public DefaultListModel modeloListaEstado300;
+  public DefaultListModel modeloListaEstado301;
+  public DefaultListModel modeloListaEstado400;
+
   public DefaultListModel modeloListaInformacion;
   //dimensiones que van a tener los JLabel
   private int alturaJLabel=50;
@@ -111,14 +115,14 @@ public class MenuPrincipal extends JFrame implements ActionListener{
     add(lblEstado301);
 
     btnCerrar = new JButton("Cerrar");
-    btnCerrar.setBounds(1020,30,250,alturaJLabel);
+    btnCerrar.setBounds(1020,500,250,alturaJLabel);
     add(btnCerrar);
 
     //vamos agregar un evento (va estar a la espera al precionar un click)
     btnCerrar.addActionListener(this);
 
     btnOpciones = new JButton("Pausar");
-    btnOpciones.setBounds(1020,150,250,alturaJLabel);
+    btnOpciones.setBounds(1020,570,250,alturaJLabel);
     add(btnOpciones);
 
     btnOpciones.addActionListener(new java.awt.event.ActionListener() {
@@ -129,10 +133,8 @@ public class MenuPrincipal extends JFrame implements ActionListener{
 
 
     estado100Lista = new JList();
-
     modeloListaEstado100 = new DefaultListModel();
     estado100Lista.setModel(modeloListaEstado100);
-
     scrollPaneestado100Lista = new JScrollPane(estado100Lista);
     scrollPaneestado100Lista.setBounds(10,abajoScrollPane,anchoScrollPane,alturaScrollPane);
     add(scrollPaneestado100Lista);
@@ -140,7 +142,6 @@ public class MenuPrincipal extends JFrame implements ActionListener{
     estado200Lista = new JList();
     modeloListaEstado200 = new DefaultListModel();
     estado200Lista.setModel(modeloListaEstado200);
-
     scrollPaneestado200Lista = new JScrollPane(estado200Lista);
     scrollPaneestado200Lista.setBounds(210,abajoScrollPane,anchoScrollPane,alturaScrollPane);
     add(scrollPaneestado200Lista);
@@ -148,24 +149,30 @@ public class MenuPrincipal extends JFrame implements ActionListener{
     estado201Lista = new JList();
     modeloListaEstado201 = new DefaultListModel();
     estado201Lista.setModel(modeloListaEstado201);
-
     scrollPaneEstado201 = new JScrollPane(estado201Lista);
     scrollPaneEstado201.setBounds(410,abajoScrollPane,anchoScrollPane,alturaScrollPane);
     add(scrollPaneEstado201);
 
     estado300Lista = new JList();
-
     modeloListaEstado300 = new DefaultListModel();
     estado300Lista.setModel(modeloListaEstado300);
-
     scrollPaneEstado300 = new JScrollPane(estado300Lista);
     scrollPaneEstado300.setBounds(610,abajoScrollPane,anchoScrollPane,alturaScrollPane);
     add(scrollPaneEstado300);
 
-    estado301 = new JList();
-    scrollPaneEstado301 = new JScrollPane(estado301);
+    estado301Lista = new JList();
+    modeloListaEstado301 = new DefaultListModel();
+    estado301Lista.setModel(modeloListaEstado301);
+    scrollPaneEstado301 = new JScrollPane(estado301Lista);
     scrollPaneEstado301.setBounds(810,abajoScrollPane,anchoScrollPane,alturaScrollPane);
     add(scrollPaneEstado301);
+
+    estado400Lista = new JList();
+    modeloListaEstado400 = new DefaultListModel();
+    estado400Lista.setModel(modeloListaEstado400);
+    scrollPaneEstado400 = new JScrollPane(estado400Lista);
+    scrollPaneEstado400.setBounds(1010,abajoScrollPane,anchoScrollPane,alturaScrollPane);
+    add(scrollPaneEstado400);
 
     informacion = new JTextArea();
     scrollPaneInformacion = new JScrollPane(informacion);
@@ -179,9 +186,7 @@ public class MenuPrincipal extends JFrame implements ActionListener{
   public void actionPerformed(ActionEvent actionE){
     //Metodo getSource contiene el objeto donde se origino el evento
     if (actionE.getSource()==btnCerrar) {
-      for (int i=0;i<BillPayments.generador.length;i++ ) {
-        BillPayments.generador[i].suspend();
-      }
+
       GeneradorDeTransacciones g1 = new GeneradorDeTransacciones();
       //averiguamos el tamno de los estados 100 actuales
       String estado100 = String.valueOf(g1.getEstado100().size());
@@ -197,13 +202,21 @@ public class MenuPrincipal extends JFrame implements ActionListener{
       VerificadorDeTransacciones v1 = new VerificadorDeTransacciones();
       String estado300 = String.valueOf(v1.getEstado300().size());
 
+      //Payer pa = new Payer();
+      //String estado301 = String.valueOf(pa.getEstado301().size());
+
       String[] resumen = {
            "Estado 100 -> actual: "+estado100,
            "Estado 200 -> actual: "+estado200,
            "Estado 201 -> actual: "+estado201,
-           "Estado 300 -> actual: "+estado300,
-           "Ingeniería petroquímica"
+           "Estado 300 -> actual: "+estado300
+
        };
+       for (int i=0;i<BillPayments.generador.length;i++ ) {
+         BillPayments.generador[i].suspend();
+       }
+
+
        //MyIcon icon = new MyIcon();
        String resp = (String) JOptionPane.showInputDialog(null, "Resumen de estados: ", "Estados actuales", JOptionPane.INFORMATION_MESSAGE, null,resumen, resumen[0]);
       System.exit(0);
