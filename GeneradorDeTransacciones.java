@@ -2,6 +2,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.lang.Thread;
 
 public class GeneradorDeTransacciones implements Runnable{
+  private int tiempo;
+
   //variable donde almacenamos el id correlativo de la cola
   private int id=0;
 
@@ -13,6 +15,12 @@ public class GeneradorDeTransacciones implements Runnable{
     return estado100;
   }
 
+  public GeneradorDeTransacciones(int tiempo){
+    this.tiempo=tiempo;
+  }
+
+
+  public GeneradorDeTransacciones(){}
 
 
   /*
@@ -23,12 +31,12 @@ public class GeneradorDeTransacciones implements Runnable{
 
   */
 
-  public void ejecutar(){
+  public void ejecutar(int tiempo){
     try {
       //por siempre
       while (true) {
         //establecemos el limite del tiempo en que una nueva transaccion se generara
-        int tiempoRandom = (int)(Math.random()*100) + 1;
+        int tiempoRandom = (int)(Math.random()*tiempo) + 1;
 
         id++;
 
@@ -61,6 +69,6 @@ public class GeneradorDeTransacciones implements Runnable{
 
   @Override
   public void run(){
-    this.ejecutar();
+    this.ejecutar(tiempo);
   }
 }

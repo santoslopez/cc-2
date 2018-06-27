@@ -2,6 +2,8 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.lang.Thread;
 
 public class ProcesadorDeTransaccionesNuevas implements Runnable{
+  private int tiempoDesencolarTransaccionE100;
+
 
   //cola donde vamos a ir almacenando los datos pasados del estado 100 al 200
   private static ConcurrentLinkedQueue<Datos> estado200 = new ConcurrentLinkedQueue<Datos>();
@@ -11,12 +13,18 @@ public class ProcesadorDeTransaccionesNuevas implements Runnable{
     return estado200;
   }
 
+  public ProcesadorDeTransaccionesNuevas(int tiempoDesencolarTransaccionE100){
+    this.tiempoDesencolarTransaccionE100=tiempoDesencolarTransaccionE100;
+  }
+
+  public ProcesadorDeTransaccionesNuevas(){}
+
   //creamos una instancia
   private GeneradorDeTransacciones g = new GeneradorDeTransacciones();
 
   @Override
   public void run(){
-    this.ejecutar();
+    this.ejecutar(tiempoDesencolarTransaccionE100);
   }
 
   /*
@@ -26,7 +34,7 @@ public class ProcesadorDeTransaccionesNuevas implements Runnable{
 
   */
 
-  public void ejecutar(){
+  public void ejecutar(int tiempoDesencolarTransaccionE100){
     try {
       while (true) {
         //verificamos que por lo menos hay colas en el estado 100
@@ -37,7 +45,7 @@ public class ProcesadorDeTransaccionesNuevas implements Runnable{
         //si en nuestra cola si hay datos
         }else {
           Datos dato = g.getEstado100().peek();
-          Thread.sleep(1000);
+          Thread.sleep(tiempoDesencolarTransaccionE100);
           //agregamos el dato el estado 200
           estado200.add(dato);
           System.out.println("Hubo un movimiento del estado 100 al 200!!!!! Dato agregado: "+dato);

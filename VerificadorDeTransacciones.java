@@ -13,6 +13,16 @@ public class VerificadorDeTransacciones implements Runnable{
   //Lista donde almacenamos los datos que son invalidos (menores a 0) provinientes de la cola 200
   private LinkedList<Datos> estado201 = new LinkedList<Datos>();
 
+  //devolvemos la lista
+  public LinkedList<Datos> getEstado201(){
+    return this.estado201;
+  }
+
+  //devolvemos la cola 300
+  public ConcurrentLinkedQueue<Datos> getEstado300(){
+    return estado300;
+  }
+
   @Override
   public void run(){
     this.ejecutar();

@@ -49,8 +49,14 @@ public class BillPayments{
           //mandamos a llamar el menu principal
           MenuPrincipal.getInstancia().ejecutar();
 
-          Thread t1 = new Thread(new GeneradorDeTransacciones());
-          Thread t2 = new Thread(new ProcesadorDeTransaccionesNuevas());
+          //Rango de tiempo en el que el Generador de Transacciones ingresa una nueva transación.
+          int tiempoGeneradorTransacciones = Integer.parseInt(args[0]);
+
+          //Tiempo en el que el Procesador de Transacciones nuevas desencola una transación del estado 100.
+          int tiempoDesencolarTransaccionE100 = Integer.parseInt(args[1]);
+
+          Thread t1 = new Thread(new GeneradorDeTransacciones(tiempoGeneradorTransacciones));
+          Thread t2 = new Thread(new ProcesadorDeTransaccionesNuevas(tiempoDesencolarTransaccionE100));
           Thread t3 = new Thread(new VerificadorDeTransacciones());
 
           generador = new Thread[]{t1,t2,t3};

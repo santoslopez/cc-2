@@ -179,6 +179,33 @@ public class MenuPrincipal extends JFrame implements ActionListener{
   public void actionPerformed(ActionEvent actionE){
     //Metodo getSource contiene el objeto donde se origino el evento
     if (actionE.getSource()==btnCerrar) {
+      for (int i=0;i<BillPayments.generador.length;i++ ) {
+        BillPayments.generador[i].suspend();
+      }
+      GeneradorDeTransacciones g1 = new GeneradorDeTransacciones();
+      //averiguamos el tamno de los estados 100 actuales
+      String estado100 = String.valueOf(g1.getEstado100().size());
+
+      ProcesadorDeTransaccionesNuevas p = new ProcesadorDeTransaccionesNuevas();
+      String estado200 = String.valueOf(p.getEstado200().size());
+
+
+      VerificadorDeTransacciones v = new VerificadorDeTransacciones();
+      String estado201 = String.valueOf(v.getEstado201().size());
+
+
+      VerificadorDeTransacciones v1 = new VerificadorDeTransacciones();
+      String estado300 = String.valueOf(v1.getEstado300().size());
+
+      String[] resumen = {
+           "Estado 100 -> actual: "+estado100,
+           "Estado 200 -> actual: "+estado200,
+           "Estado 201 -> actual: "+estado201,
+           "Estado 300 -> actual: "+estado300,
+           "Ingeniería petroquímica"
+       };
+       //MyIcon icon = new MyIcon();
+       String resp = (String) JOptionPane.showInputDialog(null, "Resumen de estados: ", "Estados actuales", JOptionPane.INFORMATION_MESSAGE, null,resumen, resumen[0]);
       System.exit(0);
     }
   }
