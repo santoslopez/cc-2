@@ -17,6 +17,10 @@ public class VerificadorDeTransacciones implements Runnable{
   private final Logger logArchivo = Logger.getLogger("VerificadorDeTransacciones");
   private String mensaje="";
 
+  private Handler consoleHandler;
+  private Handler fileHandler;
+  private SimpleFormatter simpleFormatter;
+
   public static String getError(Exception e) {
     StringWriter sWriter = new StringWriter();
     PrintWriter pWriter = new PrintWriter(sWriter);
@@ -41,7 +45,7 @@ public class VerificadorDeTransacciones implements Runnable{
   }
 
   //devolvemos la cola 300
-  public ConcurrentLinkedQueue<Datos> getEstado300(){
+  public static ConcurrentLinkedQueue<Datos> getEstado300(){
     return estado300;
   }
 
@@ -59,13 +63,14 @@ public class VerificadorDeTransacciones implements Runnable{
   public void ejecutar(int tiempoDesencolarEstado200){
     try {
 
-      Handler consoleHandler = new ConsoleHandler();
-      Handler fileHandler = new FileHandler("./informacion-transacciones.log", true);
-      SimpleFormatter simpleFormatter = new SimpleFormatter();
-      fileHandler.setFormatter(simpleFormatter);
+      consoleHandler = new ConsoleHandler();
+      fileHandler = new FileHandler("./informacion-transacciones.log", true);
+
+      fileHandler.setFormatter(new SimpleFormatter());
       logArchivo.addHandler(fileHandler);
       consoleHandler.setLevel(Level.ALL);
       fileHandler.setLevel(Level.ALL);
+
       //id inicial de la transaccion
       logArchivo.log(Level.INFO, "Bitacora inicializada");
 

@@ -202,14 +202,35 @@ public class MenuPrincipal extends JFrame implements ActionListener{
       VerificadorDeTransacciones v1 = new VerificadorDeTransacciones();
       String estado300 = String.valueOf(v1.getEstado300().size());
 
-      //Payer pa = new Payer();
-      //String estado301 = String.valueOf(pa.getEstado301().size());
+      Payer pa = new Payer();
+      String estado301 = String.valueOf(pa.getEstado301().size());
+      String estado400 = String.valueOf(pa.getEstado400().size());
+
+      //verificando el total de transacciones exitosas del estado 400
+      String exitoso = "";
+      if (pa.getEstado400().size()>=400) {
+        exitoso="Llego a las 400 transacciones exitosas del estado 400";
+      }else {
+        exitoso="NO ha llegado a las 400 transacciones del estado 400";
+      }
+
+
+      String exitosoEstado301="";
+      if (pa.getEstado301().size()>=301) {
+        exitosoEstado301="Llego a las 301 transacciones FALLIDAS del estado 301";
+      }else {
+        exitosoEstado301="NO ha llegado a las 301 transacciones FALLIDAS del estado 301";
+      }
 
       String[] resumen = {
            "Estado 100 -> actual: "+estado100,
            "Estado 200 -> actual: "+estado200,
            "Estado 201 -> actual: "+estado201,
-           "Estado 300 -> actual: "+estado300
+           "Estado 300 -> actual: "+estado300,
+           "Estado 301 -> actual: "+estado301,
+           "Estado 400 -> actual: "+estado400,
+           "Info estado 400: "+exitoso,
+           "Info estado 301: "+exitosoEstado301
 
        };
        for (int i=0;i<BillPayments.generador.length;i++ ) {
